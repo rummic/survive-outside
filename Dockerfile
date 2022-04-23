@@ -1,4 +1,4 @@
-FROM rummic.azurecr.io/so:latest
+FROM scratch
 # Create app directory
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
