@@ -1,9 +1,10 @@
 
 import React, {useState} from "react";
 import {createStyles, makeStyles, Typography,Paper,Button} from "@material-ui/core";
-
 import CustomTextField from "./CustomTextField";
 import CustomDropDown from "./CustomDropDown";
+import { v4 as uuid } from 'uuid';
+import axios from "axios"
 
 const useStyles = makeStyles(() => createStyles({
     form : {
@@ -41,6 +42,7 @@ const rainValues = [
     {value : "false",label :"No"},
 ]
 
+
 const Form = () => {
 
     const classes = useStyles();
@@ -53,14 +55,22 @@ const Form = () => {
         city : ""
     });
 
-    const handleChange = (event : React.ChangeEvent<HTMLInputElement>) => {
-        setValues({...values,[event.target.name] : event.target.value});
-    }
+const handleChange = (event : React.ChangeEvent<HTMLInputElement>) => {
+    setValues({...values,[event.target.name] : event.target.value});
+}
 
-    const handleSubmit = (event : React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        console.log(values)
-    }
+const handleSubmit = async (event : React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    console.log(values);
+
+    const user = {
+        guid : uuid(),
+        info : values
+    };
+
+    axios.post('https://so-weathercollector.azurewebsites.net/api/SaveUserTrigger?code=/7Qkt3T83ibvRGp7uqAxx0on6ofcR0OvJ62fDOEtMXebDFPhZjkknQ==', user)
+        .then(response => console.log(response.status));
+}
 
     return (
         <Paper className={classes.container}>
